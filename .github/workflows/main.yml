@@ -34,15 +34,27 @@ jobs:
     - name: iOS
       run: dotnet build XamFormsGithubActions/App1/App1.iOS/App1.iOS.csproj -t:clean -p:Configuration=GitHubActions -p:Platform=iPhone
 
-  tests:
+  analyze:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup dotnet for Test Project
+    - name: Setup dotnet for Analyze
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '6.0.x'   
-          
-    - name: Run Unit Tests
-      run: dotnet test XamFormsGithubActions/App1.Test/App1.Test.csproj  /p:Configuration=Release
+
+    - name: Install Reviewdog
+      run: |
+        wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /usr/local/bin
+
+    - name: Execute custom code analysis
+      run: |
+        dotnet build XamFormsGithubActions/App1.Test/App1.Test.csproj  /p:Configuration=Release
+        dotnet run --no-build --project CustomRules/Rules.cs -- --output results.xml
+
+    - name: Run Reviewdog for custom analysis
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        reviewdog -reporter=github-pr-check -level=error < results.xml
