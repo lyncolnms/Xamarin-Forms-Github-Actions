@@ -50,10 +50,16 @@ jobs:
     - name: Check reviewdog version
       run: reviewdog -version
 
-    - name: Execute custom code analysis
-      run: |
-        dotnet build XamFormsGithubActions/App1.Test/App1.Test.csproj  /p:Configuration=Release
-        dotnet run --no-build --project CustomRules/Rules.cs -- --output results.xml
+    - name: Run .NET Code Analysis
+      uses: dotnet/code-analysis@v1
+      id: code-analysis
+      with:
+        build-breaking: true
+
+#    - name: Execute custom code analysis
+#      run: |
+#        dotnet build XamFormsGithubActions/App1.Test/App1.Test.csproj  /p:Configuration=Release
+#        dotnet run --no-build --project CustomRules/Rules.cs -- --output results.xml
 
     - name: Run Reviewdog for custom analysis
       env:
