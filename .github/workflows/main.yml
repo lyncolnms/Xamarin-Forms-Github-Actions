@@ -45,8 +45,8 @@ jobs:
         dotnet-version: '6.0.x'   
 
     - name: Install Reviewdog
-      run: |
-        wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /usr/local/bin
+      uses: reviewdog/action-setup@v1
+      run: reviewdog -version
 
     - name: Execute custom code analysis
       run: |
