@@ -44,9 +44,11 @@ jobs:
       with:
         dotnet-version: '7.x'
 
-    - name: Install dependencies
-      run: dotnet restore XamFormsGithubActions/XamFormsGithubActions.NoTest.sln
+    # Run NuGet restore for the solution at repo root
+    - name: Run NuGet restore
+      run: dotnet restore
 
+    # Run code analysis for the solution at repo root
     - name: Run .NET Code Analysis
       uses: dotnet/code-analysis@main
       id: code-analysis
