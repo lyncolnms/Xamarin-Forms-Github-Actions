@@ -12,7 +12,7 @@ namespace App1
 		[RelayCommand]
 		public void InitName(string name)
 		{
-			Name = name;
+			_name = name;
 		}
 	}
 }

@@ -11,6 +11,9 @@ namespace App1
 			InitializeComponent();
 
 			MainPage = new MainPage();
+
+			var test = "test";
+			Console.WriteLine(test);
 		}
 
 		protected override void OnStart()
